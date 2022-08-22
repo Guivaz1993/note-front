@@ -11,8 +11,9 @@
   },
   "plugins": ["react", "prettier"],
   "rules": {
+    "quotes": ["error", "double"],
     "react/react-in-jsx-scope": "off",
     "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
-    "quotes": ["error", "double"]
+    "react/prop-types": [0]
   }
 }

@@ -1,0 +1,94 @@
+.SignIn {
+  width: 100vw;
+  height: 100vh;
+
+  display: flex;
+}
+
+.SignInText {
+  width: 50%;
+  height: 100%;
+  background-color: var(--colour-blue);
+}
+
+.SignInForm {
+  width: 50%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--colour-grey);
+}
+
+.SignInForm form {
+  width: 60%;
+  display: flex;
+  flex-direction: column;
+
+  padding: 2rem 3rem 2rem;
+  gap: 1.6rem;
+  border-radius: 1rem;
+  background-color: var(--colour-black);
+}
+
+.SignInFormText {
+  margin-bottom: 1.2rem;
+  text-align: start;
+
+  font-size: 2rem;
+  font-weight: bold;
+  color: var(--colour-light-grey);
+}
+
+.NewUserBtn {
+  text-decoration: underline;
+  color: var(--colour-orange);
+  font-weight: 400;
+}
+
+.UsernameInput,
+.PasswordInput {
+  width: 100%;
+}
+
+.InputsLabel {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.6rem;
+
+  font-size: 1.6rem;
+  color: var(--colour-orange);
+}
+
+.Inputs {
+  all: unset;
+  text-align: start;
+  width: 100%;
+
+  box-sizing: border-box;
+  background-color: var(--colour-light-grey);
+  padding: 0.5rem 0.8rem;
+  border: 1.4px solid var(--colour-light-grey);
+  border-radius: 0.4rem;
+
+  color: var(--colour-black);
+  font-size: 1.4rem;
+}
+
+.Inputs:focus {
+  border: 1.4px solid var(--colour-white);
+}
+
+.LoginBtn {
+  align-self: center;
+  width: 40%;
+  padding: 1rem;
+  margin-top: 2rem;
+  border-radius: 1rem;
+  background-color: var(--colour-orange);
+  color: var(--colour-white);
+  font-weight: bold;
+  font-size: 1.6rem;
+}
