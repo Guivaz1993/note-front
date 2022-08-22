@@ -33,7 +33,7 @@ function SignIn() {
             Olá, faça o seu login aqui.
             Ainda não tem conta?
             {" "}
-            <button type="button" className="NewUserBtn">Clique aqui!</button>
+            <button type="button" className="NewUserBtn" onClick={() => navigate("/signup")}>Clique aqui!</button>
           </span>
           <div className="UsernameInput">
             <label htmlFor="username" className="InputsLabel">

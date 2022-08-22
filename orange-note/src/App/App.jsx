@@ -7,7 +7,7 @@ import Rotas from "../routes/index";
 function App() {
   return (
     <div className="App">
-      <ToastContainer theme="colored" />
+      <ToastContainer theme="colored" style={{ fontSize: "1.6rem" }} />
       <Rotas />
     </div>
   );
