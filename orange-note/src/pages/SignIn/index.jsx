@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import { signIn } from "../../validations/user";
 import "./style.css";
 
 function SignIn() {
@@ -20,8 +21,14 @@ function SignIn() {
   async function handleSubmit(e) {
     e.preventDefault();
 
+    const error = await signIn.validate(form).catch((err) => err.errors);
+
+    if (error !== form) {
+      return toast.error(error[0]);
+    }
+
     toast.success("Seja bem-vindo ao Orange Notes.");
-    setTimeout(() => navigate("/home"), 1000);
+    return setTimeout(() => navigate("/home"), 1000);
   }
 
   return (
