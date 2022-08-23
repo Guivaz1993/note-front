@@ -30,15 +30,6 @@ function SignUp() {
       return toast.error(error[0]);
     }
 
-    if (!form.email.includes("@")
-      || !form.email.split("@")[1].includes(".")) {
-      return toast.error("E-mail inválido.");
-    }
-
-    if (form.password.length < 6) {
-      return toast.warn("A senha deve ter no mínimo 6 caracteres");
-    }
-
     if (form.password !== form.confirmPassword) {
       return toast.error("Senhas não coincidem");
     }

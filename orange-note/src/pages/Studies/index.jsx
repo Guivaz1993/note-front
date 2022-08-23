@@ -1,12 +1,16 @@
+import Header from "../../components/Header";
 import "./style.css";
 
 function Studies() {
   return (
-    <div>
-      <h1>
-        Organizador
-      </h1>
-    </div>
+    <>
+      <Header />
+      <div>
+        <h1>
+          Organizador
+        </h1>
+      </div>
+    </>
   );
 }
 
