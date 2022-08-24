@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import { signUp } from "../../validations/user";
 import "./style.css";
 
 function SignUp() {
@@ -22,13 +23,11 @@ function SignUp() {
 
   async function handleSubmit(e) {
     e.preventDefault();
-    if (!form.email.includes("@")
-      || !form.email.split("@")[1].includes(".")) {
-      return toast.error("E-mail inválido.");
-    }
 
-    if (form.password.length < 6) {
-      return toast.warn("A senha deve ter no mínimo 6 caracteres");
+    const error = await signUp.validate(form).catch((err) => err.errors);
+
+    if (error !== form) {
+      return toast.error(error[0]);
     }
 
     if (form.password !== form.confirmPassword) {
