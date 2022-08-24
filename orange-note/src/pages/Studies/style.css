@@ -1,0 +1,6 @@
+.StudiesPage {
+  min-height: 100vh;
+
+  padding: 6rem 4rem 0;
+  background-color: var(--colour-black);
+}
