@@ -1,6 +1,29 @@
 .StudiesPage {
   min-height: 100vh;
 
-  padding: 6rem 4rem 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+
+  padding: 6rem 5rem 0;
   background-color: var(--colour-black);
+}
+
+.StudiesTitle,
+.StudiesText {
+  color: var(--colour-white);
+}
+
+.StudiesTitle {
+  margin: 4rem 0 2rem;
+
+  font-size: 2.4rem;
+  font-weight: bold;
+}
+
+.StudiesText {
+  margin-bottom: 4rem;
+
+  font-size: 1.8rem;
+  text-align: start;
 }
