@@ -1,5 +1,5 @@
 import "./style.css";
-import { NavLink, useNavigate } from "react-router-dom";
+import { NavLink, useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 
 import { toast } from "react-toastify";
@@ -10,6 +10,7 @@ export default function Header() {
   const navigate = useNavigate();
   const token = getItem("token");
   const [user, setUser] = useState([]);
+  const { id } = useParams();
 
   function logOff() {
     clearAll();
@@ -59,6 +60,14 @@ export default function Header() {
         >
           Meus estudos
         </NavLink>
+        <NavLink
+          to={`/studydetail/${id}`}
+          style={({ isActive }) => (isActive ? active : undefined)}
+          className={({ isActive }) => (isActive ? "LinkHeader" : "LinkNone")}
+        >
+          Detalhamento
+        </NavLink>
+
       </div>
       <div className="HeaderUser">
         <span className="HeaderName">{user.name}</span>

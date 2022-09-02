@@ -61,7 +61,7 @@ const StyledTableRow = styled(TableRow)(() => ({
   },
 }));
 
-export default function StudiesTable() {
+export default function VideosTable({ id }) {
   const [order, setOrder] = useState("asc");
   const [orderBy, setOrderBy] = useState("study");
   const [rows, setRows] = useState([]);
@@ -85,97 +85,102 @@ export default function StudiesTable() {
   }
 
   async function loadData() {
-    const { data, status } = await get("/userTopics", token);
-
+    const { data, status } = await get(`/videos/${id}`, token);
     if (status !== 200) {
       return toast.error(data.message);
     }
 
-    data.forEach((iten) => {
-      iten.total = Number(iten.cursos) + Number(iten.textos) + Number(iten.videos);
-      iten.done = Number(iten.cursos_finalizados) + Number(iten.textos_finalizados) + Number(iten.videos_finalizadas);
-    });
-
     return setRows(data);
   }
 
-  function detailStudy(id, study, topic) {
+  function detailStudy(idArticle, study, topic) {
     setCurrentStudy({
       id, study, topic,
     });
-    navigate(`/studydetail/${id}`);
+    navigate(`/studydetail/${idArticle}`);
   }
 
   useEffect(() => {
     loadData();
-    setCurrentStudy({});
   }, []);
 
   return (
-    <TableContainer sx={{ background: "var(--colour-black)" }}>
-      <Table sx={{ minWidth: 700 }} aria-label="customized table">
-        <TableHead>
-          <TableRow>
-            <StyledTableCell
-              sortDirection={orderBy === "study" ? order : false}
-              onClick={() => handleSort("study")}
-            >
-              Plano de estudo
-            </StyledTableCell>
-            <StyledTableCell
-              sortDirection={orderBy === "topic" ? order : false}
-              onClick={() => handleSort("topic")}
-              align="center"
-            >
-              Tópicos
-            </StyledTableCell>
-            <StyledTableCell
-              align="center"
-              sortDirection={orderBy === "total" ? order : false}
-              onClick={() => handleSort("total")}
-            >
-              Conteúdos
-            </StyledTableCell>
-            <StyledTableCell
-              align="center"
-              sortDirection={orderBy === "done" ? order : false}
-              onClick={() => handleSort("done")}
-            >
-              Finalizados
-            </StyledTableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {rows.map((row) => (
-            <StyledTableRow
-              key={row.id}
-              onClick={() => detailStudy(row.id, row.study, row.topic)}
-              hover
-            >
-              <StyledTableCell>
-                {row.study}
-              </StyledTableCell>
-              <StyledTableCell
-                align="center"
-              >
-                {row.topic}
 
+    <TableContainer sx={{ background: "var(--colour-black)" }}>
+      {rows.length !== 0 && (
+        <Table sx={{ minWidth: 600 }} aria-label="customized table">
+          <TableHead>
+            <TableRow>
+              <StyledTableCell
+                sortDirection={orderBy === "done" ? order : false}
+                onClick={() => handleSort("done")}
+              >
+                Finalizado
+              </StyledTableCell>
+              <StyledTableCell
+                sortDirection={orderBy === "video" ? order : false}
+                onClick={() => handleSort("video")}
+                align="center"
+              >
+                Título
+              </StyledTableCell>
+              <StyledTableCell
+                sortDirection={orderBy === "description" ? order : false}
+                onClick={() => handleSort("description")}
+                align="center"
+              >
+                Descrição
               </StyledTableCell>
               <StyledTableCell
                 align="center"
+                sortDirection={orderBy === "link" ? order : false}
+                onClick={() => handleSort("link")}
               >
-                {/* {Number(row.cursos) + Number(row.textos) + Number(row.videos)} */}
-                {row.total}
+                Link
               </StyledTableCell>
               <StyledTableCell
                 align="center"
+                sortDirection={orderBy === "last_change" ? order : false}
+                onClick={() => handleSort("last_change")}
               >
-                {row.done}
+                Ultima alteração
               </StyledTableCell>
-            </StyledTableRow>
-          ))}
-        </TableBody>
-      </Table>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {rows.map((row) => (
+              <StyledTableRow
+                key={row.id}
+                onClick={() => detailStudy(row.id, row.study, row.topic)}
+                hover
+              >
+                <StyledTableCell>
+                  {row.done ? "Finalizado" : "Em aberto"}
+                </StyledTableCell>
+                <StyledTableCell>
+                  {row.video}
+                </StyledTableCell>
+                <StyledTableCell
+                  align="center"
+                >
+                  {row.description}
+
+                </StyledTableCell>
+                <StyledTableCell
+                  align="center"
+                >
+                  {row.link}
+                </StyledTableCell>
+                <StyledTableCell
+                  align="center"
+                >
+                  {(new Date(row.last_change)).toLocaleDateString()}
+                </StyledTableCell>
+              </StyledTableRow>
+            ))}
+          </TableBody>
+        </Table>
+      )}
     </TableContainer>
   );
 }

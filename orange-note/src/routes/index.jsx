@@ -13,7 +13,7 @@ function index() {
       <Route path="/signup" element={<SignUp />} />
       <Route path="/home" element={<Home />} />
       <Route path="/studies" element={<Studies />} />
-      <Route path="/studydetail" element={<StudyDetail />} />
+      <Route path="/studydetail/:id" element={<StudyDetail />} />
     </Routes>
   );
 }

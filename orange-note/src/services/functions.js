@@ -8,6 +8,7 @@ async function get(resource, token) {
         token,
       },
     });
+    // console.log(response);
     return { data: response.data, status: response.status };
   } catch (error) {
     return error.response.data;

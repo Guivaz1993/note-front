@@ -19,9 +19,7 @@ function Studies() {
   }, []);
   return (
     <>
-      <Header
-        isActive="studies"
-      />
+      <Header detail={false} />
       <div className="StudiesPage">
         <h1 className="StudiesTitle">
           Meus estudos

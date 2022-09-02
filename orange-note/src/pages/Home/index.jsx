@@ -17,10 +17,6 @@ function Home() {
 
   const token = getItem("token");
 
-  function countInfos() {
-
-  }
-
   async function loadInfos() {
     let countTotal = 0;
     let countDone = 0;

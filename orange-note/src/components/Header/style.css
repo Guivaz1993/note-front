@@ -57,6 +57,10 @@ header {
   font-weight: bold;
 }
 
+.LinkNone {
+  display: none;
+}
+
 @media screen and (max-width: 600px) {
   header {
     height: 15rem;
