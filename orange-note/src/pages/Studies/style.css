@@ -27,3 +27,10 @@
   font-size: 1.8rem;
   text-align: start;
 }
+
+@media screen and (max-width: 600px) {
+
+  .StudiesPage {
+    padding-top: 15rem;
+  }
+}

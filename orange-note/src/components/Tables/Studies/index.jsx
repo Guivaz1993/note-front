@@ -1,4 +1,5 @@
-import { useState } from "react";
+/* eslint-disable max-len */
+import { useEffect, useState } from "react";
 import { styled } from "@mui/material/styles";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -6,6 +7,9 @@ import TableCell, { tableCellClasses } from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
+import { toast } from "react-toastify";
+import { get } from "../../../services/functions";
+import { getItem } from "../../../utils/Storage";
 
 const StyledTableCell = styled(TableCell)(() => ({
   "&": {
@@ -54,9 +58,11 @@ const StyledTableRow = styled(TableRow)(() => ({
   },
 }));
 
-export default function StudiesTable({ rows, setRows }) {
+export default function StudiesTable() {
   const [order, setOrder] = useState("asc");
   const [orderBy, setOrderBy] = useState("area");
+  const [rows, setRows] = useState([]);
+  const token = getItem("token");
 
   function handleSort(colunm) {
     const localRows = rows;
@@ -72,6 +78,19 @@ export default function StudiesTable({ rows, setRows }) {
     setOrderBy(colunm);
   }
 
+  async function loadData() {
+    const { data, status } = await get("/userTopics", token);
+
+    if (status !== 200) {
+      return toast.error(data.message);
+    }
+    return setRows(data);
+  }
+
+  useEffect(() => {
+    loadData();
+  }, []);
+
   return (
     <TableContainer sx={{ background: "var(--colour-black)" }}>
       <Table sx={{ minWidth: 700 }} aria-label="customized table">
@@ -81,7 +100,7 @@ export default function StudiesTable({ rows, setRows }) {
               sortDirection={orderBy === "area" ? order : false}
               onClick={() => handleSort("area")}
             >
-              Área de estudo
+              Plano de estudo
             </StyledTableCell>
             <StyledTableCell
               sortDirection={orderBy === "topic" ? order : false}
@@ -110,11 +129,11 @@ export default function StudiesTable({ rows, setRows }) {
           {rows.map((row) => (
             <StyledTableRow
               key={row.id}
-              onClick={() => console.log(`Clicou no ${row.area} - ${row.topic}`)}
+              onClick={() => console.log(`Clicou no ${row.study} - ${row.topic}`)}
               hover
             >
               <StyledTableCell>
-                {row.area}
+                {row.study}
               </StyledTableCell>
               <StyledTableCell
                 align="center"
@@ -125,14 +144,15 @@ export default function StudiesTable({ rows, setRows }) {
               <StyledTableCell
                 align="center"
               >
-                {row.total}
+                {Number(row.cursos) + Number(row.textos) + Number(row.videos)}
 
               </StyledTableCell>
               <StyledTableCell
                 align="center"
               >
-                {row.done}
-
+                {Number(row.cursos_finalizados)
+                  + Number(row.textos_finalizados)
+                  + Number(row.videos_finalizadas)}
               </StyledTableCell>
             </StyledTableRow>
           ))}

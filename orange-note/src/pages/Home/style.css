@@ -43,6 +43,10 @@
 
 @media screen and (max-width: 600px) {
 
+  .HomePage {
+    padding-top: 15rem;
+  }
+
   .MainInfos,
   .GraphInfos {
     flex-direction: column;

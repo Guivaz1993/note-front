@@ -1,28 +1,27 @@
 /* eslint-disable max-len */
-import { useState } from "react";
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 import Header from "../../components/Header";
 import StudiesTable from "../../components/Tables/Studies";
+import { getItem } from "../../utils/Storage";
 import "./style.css";
 
-function createData(id, area, topic, total, done) {
-  return {
-    id, area, topic, total, done,
-  };
-}
-
-const rowsDefault = [
-  createData(1, "Front End", "JavaScript", 10, 8),
-  createData(2, "Front End", "React", 5, 4),
-  createData(3, "Back end", "JavaScript", 6, 1),
-  createData(4, "UX/UI", "UX Research", 8, 2),
-  createData(5, "Mobile", "React Native", 2, 2),
-];
-
 function Studies() {
-  const [rows, setRows] = useState(rowsDefault);
+  const token = getItem("token");
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!token) {
+      toast.info("Por favor faça login novamente.");
+      navigate("/");
+    }
+  }, []);
   return (
     <>
-      <Header />
+      <Header
+        isActive="studies"
+      />
       <div className="StudiesPage">
         <h1 className="StudiesTitle">
           Meus estudos
@@ -31,10 +30,7 @@ function Studies() {
           Acompanhe, adicione, conclua seus estudos.
           Utilize nossa plataforma e veja seus temas de estudos agrupando as aulas, vídeos, textos, livros e tudo mais que você tenha utilizado neles e ache relevante ter um acesso rápido.
         </p>
-        <StudiesTable
-          rows={rows}
-          setRows={setRows}
-        />
+        <StudiesTable />
       </div>
     </>
   );
