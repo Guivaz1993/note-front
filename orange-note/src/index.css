@@ -21,6 +21,8 @@ body {
   --colour-black: #201F1B;
   --colour-blue: #0b0045;
   --colour-orange: #ff4500;
+  --colour-graph1: #983d1c;
+  --colour-graph2: #ef6431;
 }
 
 @font-face {
