@@ -1,14 +1,11 @@
-/* eslint-disable no-param-reassign */
+/* eslint-disable react/no-array-index-key */
 /* eslint-disable max-len */
-/* eslint-disable no-unused-vars */
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import {
-  BarChart, Bar, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer,
-  PieChart, Pie,
+  Bar, BarChart, CartesianGrid, Legend, Pie, PieChart, ResponsiveContainer, Tooltip, XAxis, YAxis, Cell,
 } from "recharts";
-
 import Header from "../../components/Header";
 import ProgressBar from "../../components/ProgressBar";
 import { get } from "../../services/functions";
@@ -19,11 +16,12 @@ import "./style.css";
 function Home() {
   const navigate = useNavigate();
   const [infos, setInfos] = useState([]);
-  const [pieChart, setPieChart] = useState([]);
+  const [pieChart, setPieChart] = useState([{ name: "textos", valor: 10 }]);
   const [total, setTotal] = useState();
   const [done, setDone] = useState();
 
   const token = getItem("token");
+  const Colors = ["var(--colour-graph1)", "var(--colour-graph2)", "var(--colour-orange)"];
 
   async function loadInfos() {
     let countTotal = 0;
@@ -31,7 +29,6 @@ function Home() {
     let textos = 0;
     let videos = 0;
     let cursos = 0;
-    let outros = 0;
 
     const { data, status } = await get("userTopics", token);
     if (status !== 200) {
@@ -39,15 +36,11 @@ function Home() {
     }
 
     data.forEach((iten) => {
-      iten.name = `${iten.study} - ${iten.topic}`;
-      iten.conteudos = Number(iten.textos) + Number(iten.videos) + Number(iten.cursos);
-      iten.finalizados = Number(iten.textos_finalizados) + Number(iten.videos_finalizadas) + Number(iten.cursos_finalizados);
-      countTotal += iten.conteudos;
-      countDone += iten.finalizados;
+      countTotal += iten.contents;
+      countDone += iten.done;
       textos += Number(iten.textos);
       videos += Number(iten.videos);
       cursos += Number(iten.cursos);
-      outros += Number(iten.outros);
     });
     setTotal(countTotal);
     setDone(countDone);
@@ -125,8 +118,6 @@ function Home() {
               O que você tem estudado mais?
             </div>
             <div className="BodyCard">
-              Gráfico de barras
-              {/* <BarGraphic data={infos} /> */}
               <ResponsiveContainer
                 width="100%"
                 height={400}
@@ -148,8 +139,8 @@ function Home() {
                   <YAxis />
                   <Tooltip />
                   <Legend />
-                  <Bar dataKey="conteudos" fill="var(--colour-graph1)" />
-                  <Bar dataKey="finalizados" fill="var(--colour-graph2)" />
+                  <Bar dataKey="contents" fill="var(--colour-graph1)" />
+                  <Bar dataKey="done" fill="var(--colour-graph2)" />
                 </BarChart>
               </ResponsiveContainer>
             </div>
@@ -159,19 +150,30 @@ function Home() {
               Que tipo de conteúdo você consome mais?
             </div>
             <div className="BodyCard">
-              Gráfico de pizza
               <ResponsiveContainer width="100%" height={400}>
                 <PieChart width="100%" height="100%">
                   <Pie
-                    dataKey="valor"
-                    isAnimationActive={false}
                     data={pieChart}
-                    // cx="50%"
-                    // cy="50%"
+                    cx="50%"
+                    cy="50%"
+                    labelLine={false}
                     outerRadius={80}
-                    fill="var(--colour-graph1)"
-                    label
-                  />
+                    fill="#8884d8"
+                    dataKey="valor"
+                  >
+                    {
+                      pieChart.map((iten, index) => (
+                        <Cell
+                          key={`cell-${index}`}
+                          fill={Colors[index]}
+                        >
+                          <span>
+                            {iten.name}
+                          </span>
+                        </Cell>
+                      ))
+                    }
+                  </Pie>
                   <Tooltip />
                 </PieChart>
               </ResponsiveContainer>

@@ -85,13 +85,21 @@ export default function ArticlesTable({ id }) {
   }
 
   async function loadData() {
-    const { data, status } = await get(`/articles/${id}`, token);
+    try {
+      const { data, status } = await get(`/articles/${id}`, token);
 
-    if (status !== 200) {
-      return toast.error(data.message);
+      if (data.message === "Nenhum texto encontrado.") {
+        return setRows([]);
+      }
+
+      if (status !== 200) {
+        return toast.error(data.message);
+      }
+
+      return setRows(data);
+    } catch (error) {
+      return toast.error(error.message);
     }
-
-    return setRows(data);
   }
 
   function detailStudy(idArticle, study, topic) {
@@ -107,7 +115,7 @@ export default function ArticlesTable({ id }) {
 
   return (
     <TableContainer sx={{ background: "var(--colour-black)" }}>
-      {rows.length !== 0 && (
+      {rows.length !== 0 ? (
         <Table sx={{ minWidth: 600 }} aria-label="customized table">
           <TableHead>
             <TableRow>
@@ -180,6 +188,8 @@ export default function ArticlesTable({ id }) {
             ))}
           </TableBody>
         </Table>
+      ) : (
+        <h1>Nenhum texto cadastrado</h1>
       )}
     </TableContainer>
   );

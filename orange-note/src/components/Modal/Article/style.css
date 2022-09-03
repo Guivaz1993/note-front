@@ -1,0 +1,68 @@
+.ModalStudy {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  margin: 1rem;
+  border-radius: 8px;
+  box-shadow: 2px 2px 10px 4px rgb(0, 0, 0, 0.7);
+}
+
+.ModalStudyForm {
+  background-color: var(--colour-grey);
+  padding: 3rem 2rem;
+
+}
+
+.Inputs {
+  all: unset;
+  text-align: start;
+  width: 100%;
+
+  box-sizing: border-box;
+  background-color: var(--colour-light-grey);
+  padding: 0.5rem 0.8rem;
+  border: 1.4px solid var(--colour-light-grey);
+  border-radius: 0.4rem;
+
+  color: var(--colour-black);
+  font-size: 1.4rem;
+}
+
+.Inputs:focus {
+  border: 1.4px solid var(--colour-white);
+}
+
+.StudyNewInfo {
+  padding: 1rem;
+  border-radius: 1rem;
+  background-color: var(--colour-orange);
+  color: var(--colour-white);
+  font-weight: bold;
+  font-size: 1rem;
+}
+
+.BtnSectionStudy {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.StudyBtn {
+  text-align: center;
+  width: 40%;
+  padding: 1rem;
+  margin-top: 2rem;
+  border-radius: 1rem;
+  font-weight: bold;
+  font-size: 1.6rem;
+}
+
+.StudyCreateBtn {
+  background-color: var(--colour-orange);
+  color: var(--colour-white);
+}
+
+.StudyCancelBtn {
+  background-color: var(--colour-light-grey);
+  color: var(--colour-black);
+}

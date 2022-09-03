@@ -85,12 +85,18 @@ export default function VideosTable({ id }) {
   }
 
   async function loadData() {
-    const { data, status } = await get(`/videos/${id}`, token);
-    if (status !== 200) {
-      return toast.error(data.message);
+    try {
+      const { data, status } = await get(`/videos/${id}`, token);
+      if (data.message === "Nenhum vídeo encontrado.") {
+        return setRows([]);
+      }
+      if (status !== 200) {
+        return toast.error(data.message);
+      }
+      return setRows(data);
+    } catch (error) {
+      return toast.error(error.message);
     }
-
-    return setRows(data);
   }
 
   function detailStudy(idArticle, study, topic) {
@@ -107,7 +113,7 @@ export default function VideosTable({ id }) {
   return (
 
     <TableContainer sx={{ background: "var(--colour-black)" }}>
-      {rows.length !== 0 && (
+      {rows.length !== 0 ? (
         <Table sx={{ minWidth: 600 }} aria-label="customized table">
           <TableHead>
             <TableRow>
@@ -180,7 +186,10 @@ export default function VideosTable({ id }) {
             ))}
           </TableBody>
         </Table>
-      )}
+      )
+        : (
+          <h1>Nenhum vídeo cadastrado</h1>
+        )}
     </TableContainer>
   );
 }

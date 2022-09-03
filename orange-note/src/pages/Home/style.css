@@ -1,15 +1,21 @@
 .HomePage {
   min-height: 100vh;
+  height: 100%;
 
-  padding: 6rem 4rem 0;
+  padding: 6rem 4rem 2rem;
   background-color: var(--colour-black);
 }
 
 .MainInfos,
 .GraphInfos {
-  margin-top: 2rem;
+  margin: 3rem 0;
 
   display: flex;
+  /* background-color: var(--colour-black); */
+}
+
+.GraphInfos {
+  flex-direction: column;
 }
 
 .Card,
@@ -42,14 +48,13 @@
 }
 
 
-@media screen and (max-width: 600px) {
+@media screen and (max-width: 700px) {
 
   .HomePage {
     padding-top: 15rem;
   }
 
-  .MainInfos,
-  .GraphInfos {
+  .MainInfos {
     flex-direction: column;
   }
 }

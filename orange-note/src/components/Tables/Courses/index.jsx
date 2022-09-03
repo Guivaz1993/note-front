@@ -12,6 +12,7 @@ import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { get } from "../../../services/functions";
 import { getItem } from "../../../utils/Storage";
+import useUser from "../../../hooks/useUser";
 
 const StyledTableCell = styled(TableCell)(() => ({
   "&": {
@@ -60,10 +61,11 @@ const StyledTableRow = styled(TableRow)(() => ({
   },
 }));
 
-export default function StudiesTable({ openModal }) {
+export default function CoursesTable({ id }) {
   const [order, setOrder] = useState("asc");
   const [orderBy, setOrderBy] = useState("study");
   const [rows, setRows] = useState([]);
+  const { setCurrentStudy } = useUser();
 
   const token = getItem("token");
   const navigate = useNavigate();
@@ -84,91 +86,101 @@ export default function StudiesTable({ openModal }) {
 
   async function loadData() {
     try {
-      const { data, status } = await get("/userTopics", token);
+      const { data, status } = await get(`/courses/${id}`, token);
+
+      if (data.message === "Nenhum curso encontrado.") {
+        return setRows([]);
+      }
 
       if (status !== 200) {
-        return toast.error(data.message);
+        return toast.error(data);
       }
 
       return setRows(data);
     } catch (error) {
-      return toast.error(error);
+      return toast.error(error.message);
     }
   }
 
-  function detailStudy(id, topic) {
-    navigate(`/studydetail/${id}/${topic}`);
+  function detailStudy(idArticle, study, topic) {
+    setCurrentStudy({
+      id, study, topic,
+    });
+    navigate(`/studydetail/${idArticle}`);
   }
 
   useEffect(() => {
     loadData();
-  }, [openModal]);
+  }, []);
 
   return (
     <TableContainer sx={{ background: "var(--colour-black)" }}>
-      <Table sx={{ minWidth: 700 }} aria-label="customized table">
-        <TableHead>
-          <TableRow>
-            <StyledTableCell
-              sortDirection={orderBy === "study" ? order : false}
-              onClick={() => handleSort("study")}
-            >
-              Plano de estudo
-            </StyledTableCell>
-            <StyledTableCell
-              sortDirection={orderBy === "topic" ? order : false}
-              onClick={() => handleSort("topic")}
-              align="center"
-            >
-              Tópicos
-            </StyledTableCell>
-            <StyledTableCell
-              align="center"
-              sortDirection={orderBy === "total" ? order : false}
-              onClick={() => handleSort("total")}
-            >
-              Conteúdos
-            </StyledTableCell>
-            <StyledTableCell
-              align="center"
-              sortDirection={orderBy === "done" ? order : false}
-              onClick={() => handleSort("done")}
-            >
-              Finalizados
-            </StyledTableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {rows.map((row) => (
-            <StyledTableRow
-              key={row.id}
-              onClick={() => detailStudy(row.id, row.topic_id)}
-              hover
-            >
-              <StyledTableCell>
-                {row.study}
+      {rows.length !== 0 ? (
+        <Table sx={{ minWidth: 600 }} aria-label="customized table">
+          <TableHead>
+            <TableRow>
+              <StyledTableCell
+                sortDirection={orderBy === "done" ? order : false}
+                onClick={() => handleSort("done")}
+              >
+                Finalizado
+              </StyledTableCell>
+              <StyledTableCell
+                sortDirection={orderBy === "course" ? order : false}
+                onClick={() => handleSort("course")}
+                align="center"
+              >
+                Título
+              </StyledTableCell>
+              <StyledTableCell
+                sortDirection={orderBy === "description" ? order : false}
+                onClick={() => handleSort("description")}
+                align="center"
+              >
+                Descrição
               </StyledTableCell>
               <StyledTableCell
                 align="center"
+                sortDirection={orderBy === "last_change" ? order : false}
+                onClick={() => handleSort("last_change")}
               >
-                {row.topic}
+                Ultima alteração
+              </StyledTableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {rows.map((row) => (
+              <StyledTableRow
+                key={row.id}
+                onClick={() => detailStudy(row.id, row.study, row.topic)}
+                hover
+              >
+                <StyledTableCell>
+                  {row.done ? "Finalizado" : "Em aberto"}
+                </StyledTableCell>
+                <StyledTableCell>
+                  {row.course}
+                </StyledTableCell>
+                <StyledTableCell
+                  align="center"
+                >
+                  {row.description}
 
-              </StyledTableCell>
-              <StyledTableCell
-                align="center"
-              >
-                {/* {Number(row.cursos) + Number(row.textos) + Number(row.videos)} */}
-                {row.contents}
-              </StyledTableCell>
-              <StyledTableCell
-                align="center"
-              >
-                {row.done}
-              </StyledTableCell>
-            </StyledTableRow>
-          ))}
-        </TableBody>
-      </Table>
+                </StyledTableCell>
+                <StyledTableCell
+                  align="center"
+                >
+                  {/* {(new Date(row.last_change)).toLocaleDateString()} */}
+                  {row.last_change}
+                </StyledTableCell>
+              </StyledTableRow>
+            ))}
+          </TableBody>
+        </Table>
+      )
+        : (
+          <h1>Nenhum curso cadastrado</h1>
+        )}
     </TableContainer>
   );
 }
