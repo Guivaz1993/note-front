@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import { post } from "../../services/functions";
 import { signUp } from "../../validations/user";
 import "./style.css";
 
@@ -23,20 +24,25 @@ function SignUp() {
 
   async function handleSubmit(e) {
     e.preventDefault();
+    try {
+      await signUp.validate(form).catch((err) => err.errors);
 
-    const error = await signUp.validate(form).catch((err) => err.errors);
+      if (form.password !== form.confirmPassword) {
+        return toast.error("Senhas não coincidem");
+      }
 
-    if (error !== form) {
-      return toast.error(error[0]);
+      const { data, status } = await post("/signup", form);
+
+      if (status === 400) {
+        return toast.error(data.message);
+      }
+
+      toast.success("Cadastro realizado com sucesso.");
+
+      return setTimeout(() => navigate("/"), 1000);
+    } catch (error) {
+      return toast.error(error.message);
     }
-
-    if (form.password !== form.confirmPassword) {
-      return toast.error("Senhas não coincidem");
-    }
-
-    toast.success("Cadastro realizado com sucesso.");
-
-    return setTimeout(() => navigate("/"), 1000);
   }
   return (
     <div className="SignUp">

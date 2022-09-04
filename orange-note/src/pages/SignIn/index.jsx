@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import { post } from "../../services/functions";
+import { setItem } from "../../utils/Storage";
 import { signIn } from "../../validations/user";
 import "./style.css";
 
@@ -20,15 +22,22 @@ function SignIn() {
 
   async function handleSubmit(e) {
     e.preventDefault();
+    await signIn.validate(form);
 
-    const error = await signIn.validate(form).catch((err) => err.errors);
+    try {
+      const { data, status } = await post("/signin", form);
 
-    if (error !== form) {
-      return toast.error(error[0]);
+      if (status === 400) {
+        return toast.error(data.message);
+      }
+      setItem("token", data.token);
+
+      toast.success("Seja bem-vindo ao Orange Notes.");
+
+      return setTimeout(() => navigate("/home"), 1000);
+    } catch (error) {
+      return toast.error(error.message);
     }
-
-    toast.success("Seja bem-vindo ao Orange Notes.");
-    return setTimeout(() => navigate("/home"), 1000);
   }
 
   return (

@@ -1,0 +1,96 @@
+/* Global styles to modal */
+.ModalForm {
+  min-width: 30vw;
+  background-color: var(--colour-grey);
+  padding: 3rem 2rem;
+}
+
+.ModalFormContainer {
+  margin: 1.6rem 0;
+}
+
+.ModalTitle {
+  margin-bottom: 2.4rem;
+
+  font-size: 2rem;
+  font-weight: bold;
+  color: var(--colour-orange);
+}
+
+.ModalLabel {
+  display: flex;
+  flex-direction: column;
+}
+
+.ModalLabelText {
+  margin-bottom: 0.6rem;
+
+  font-size: 1.6rem;
+  font-weight: bold;
+  color: var(--colour-light-grey);
+}
+
+.ModalInput {
+  all: unset;
+  text-align: start;
+  width: 100%;
+  cursor: auto;
+
+  box-sizing: border-box;
+  background-color: var(--colour-light-grey);
+  padding: 0.5rem 0.8rem;
+  border: 1.4px solid var(--colour-light-grey);
+  border-radius: 0.4rem;
+
+  color: var(--colour-black);
+  font-size: 1.4rem;
+}
+
+.ModalInput:focus {
+  border: 1.4px solid var(--colour-white);
+}
+
+.ModalBtnContainer {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.ModalBtn {
+  width: 40%;
+  padding: 1rem;
+  margin-top: 2rem;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+
+  border-radius: 1rem;
+  font-weight: bold;
+  font-size: 1.6rem;
+}
+
+.ModalBtnConfirm {
+  background-color: var(--colour-orange);
+  color: var(--colour-white);
+}
+
+.ModalBtnCancel {
+  background-color: var(--colour-light-grey);
+  color: var(--colour-black);
+}
+
+.ModalContainerRadioBtn {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+
+.ModalRadioBtnOptions {
+  display: flex;
+  align-items: center;
+  margin-right: 1rem;
+  font-weight: bold;
+  color: var(--colour-white);
+}
