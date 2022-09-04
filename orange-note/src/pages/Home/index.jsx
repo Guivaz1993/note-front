@@ -15,11 +15,11 @@ import "./style.css";
 
 function Home() {
   const navigate = useNavigate();
-  // const [infos, setInfos] = useState([]);
   const [pieChart, setPieChart] = useState([{ name: "textos", valor: 10 }]);
   const [barChart, setBarChart] = useState([{ name: "Nome", Cadastrados: 10, Feitos: 5 }]);
   const [total, setTotal] = useState();
   const [done, setDone] = useState();
+  const [course, setCourse] = useState();
 
   const token = getItem("token");
   const Colors = ["var(--colour-graph1)", "var(--colour-graph2)", "var(--colour-orange)"];
@@ -30,38 +30,53 @@ function Home() {
     let textos = 0;
     let videos = 0;
     let cursos = 0;
+    try {
+      const { data, status } = await get("/usertopics", token);
+      if (status !== 200) {
+        return toast.error(data);
+      }
 
-    const { data, status } = await get("userTopics", token);
-    if (status !== 200) {
-      return toast.error(data);
+      const localBarChart = [];
+
+      data.forEach((iten) => {
+        countTotal += iten.contents;
+        countDone += iten.done;
+        textos += Number(iten.textos);
+        videos += Number(iten.videos);
+        cursos += Number(iten.cursos);
+        localBarChart.push({ name: iten.name, Cadastrados: iten.contents, Feitos: iten.done });
+      });
+      setTotal(countTotal);
+      setDone(countDone);
+      setPieChart([{
+        name: "Textos",
+        valor: textos,
+      },
+      {
+        name: "Vídeos",
+        valor: videos,
+      },
+      {
+        name: "Cursos",
+        valor: cursos,
+      },
+      ]);
+      return setBarChart(localBarChart);
+    } catch (error) {
+      return toast.error(error.message);
     }
+  }
 
-    const localBarChart = [];
-
-    data.forEach((iten) => {
-      countTotal += iten.contents;
-      countDone += iten.done;
-      textos += Number(iten.textos);
-      videos += Number(iten.videos);
-      cursos += Number(iten.cursos);
-      localBarChart.push({ name: iten.name, Cadastrados: iten.contents, Feitos: iten.done });
-    });
-    setTotal(countTotal);
-    setDone(countDone);
-    setPieChart([{
-      name: "Textos",
-      valor: textos,
-    },
-    {
-      name: "Vídeos",
-      valor: videos,
-    },
-    {
-      name: "Cursos",
-      valor: cursos,
-    },
-    ]);
-    return setBarChart(localBarChart);
+  async function loadLastLesson() {
+    try {
+      const { data, status } = await get("/lastcourse", token);
+      if (status !== 200) {
+        return toast.error(data);
+      }
+      return setCourse(data);
+    } catch (error) {
+      return toast.error(error.message);
+    }
   }
 
   useEffect(() => {
@@ -70,6 +85,7 @@ function Home() {
       navigate("/");
     }
     loadInfos();
+    loadLastLesson();
   }, []);
 
   return (
@@ -78,17 +94,18 @@ function Home() {
         isActive="home"
       />
       <section className="HomePage">
-        <h1>
-          Dashboard
-        </h1>
         <section className="MainInfos">
           <article className="Card">
             <div className="HeaderCard">
-              Última aula alterada
+              O último curso que você assistiu aula
             </div>
             <div className="BodyCard">
-              Card 1 card 1 Card 1 card 1 Card 1 card 1 Card 1 card 1
-              Card 1 card 1 Card 1 card 1 Card 1 card 1
+              {course
+                ? (
+                  <button type="button" onClick={() => navigate(`/course/${course.id}`)}>
+                    {course.course}
+                  </button>
+                ) : "Nenhum curso com aula"}
             </div>
           </article>
           <article className="Card">

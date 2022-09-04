@@ -84,7 +84,7 @@ export default function StudiesTable({ openModal }) {
 
   async function loadData() {
     try {
-      const { data, status } = await get("/userTopics", token);
+      const { data, status } = await get("/usertopics", token);
 
       if (status !== 200) {
         return toast.error(data.message);
