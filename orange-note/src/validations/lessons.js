@@ -1,4 +1,4 @@
-const yup = require("../validations copy/config");
+const yup = require("./config");
 
 const newLessonSchema = yup.object().shape({
   lesson: yup.string().trim().required(),

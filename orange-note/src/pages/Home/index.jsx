@@ -15,8 +15,8 @@ import "./style.css";
 
 function Home() {
   const navigate = useNavigate();
-  const [pieChart, setPieChart] = useState([{ name: "textos", valor: 10 }]);
-  const [barChart, setBarChart] = useState([{ name: "Nome", Cadastrados: 10, Feitos: 5 }]);
+  const [pieChart, setPieChart] = useState([{ name: "textos", valor: 0 }]);
+  const [barChart, setBarChart] = useState([{ name: "Nome", Cadastrados: 0, Feitos: 0 }]);
   const [total, setTotal] = useState();
   const [done, setDone] = useState();
   const [course, setCourse] = useState();
@@ -113,23 +113,29 @@ function Home() {
               Quantidade de conteúdos
             </div>
             <div className="BodyCard">
-              {`Você tem ${total} conteúdos cadastrados`}
+              {total ? `Você tem ${total} conteúdos cadastrados` : "Nenhum conteúdo cadastado"}
             </div>
           </article>
           <article className="Card">
             <div className="HeaderCard">
               Evolução
             </div>
-            <div className="BodyCard">
-              <p>
-                Você já completou
-                {" "}
-                {((done / total) * 100).toFixed(2)}
-                {" "}
-                % dos seus conteúdos cadastrados
-              </p>
-              <ProgressBar progress={(done / total) * 100} />
-            </div>
+            {total ? (
+              <div className="BodyCard">
+                <p>
+                  {
+                    `Você já completou
+                ${((done / total) * 100).toFixed(2)}
+                % dos seus conteúdos cadastrados`
+                  }
+                </p>
+                <ProgressBar progress={(done / total) * 100} />
+              </div>
+            ) : (
+              <div className="BodyCard">
+                <p>Nenhum conteúdo cadastrado</p>
+              </div>
+            )}
           </article>
         </section>
         <section className="GraphInfos">

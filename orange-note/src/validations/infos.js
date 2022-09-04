@@ -1,4 +1,4 @@
-const yup = require("../validations copy/config");
+const yup = require("./config");
 
 const newStudySchema = yup.object().shape({
   study: yup.string().required(),
