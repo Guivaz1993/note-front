@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { post } from "../../../services/functions";
 import { getItem } from "../../../utils/Storage";
+import { newStudySchema } from "../../../validations/infos";
 
 import "../styles.css";
 import "./style.css";
@@ -25,6 +26,8 @@ export default function ModalStudy({ openModal, setOpenModal }) {
   async function handleSubmit(e) {
     e.preventDefault();
     try {
+      await newStudySchema.validate(form);
+
       const { data, status } = await post("/studies", form, token);
 
       if (status !== 201) {

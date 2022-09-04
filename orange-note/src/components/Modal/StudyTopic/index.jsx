@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { get, post } from "../../../services/functions";
 import { getItem } from "../../../utils/Storage";
+import { newStudyTopicSchema } from "../../../validations/infos";
 
 import "../styles.css";
 import "./style.css";
@@ -60,6 +61,8 @@ export default function ModalStudyTopic({ openModal, setOpenModal, setOpenModalT
   async function handleSubmit(e) {
     e.preventDefault();
     try {
+      await newStudyTopicSchema.validate(form);
+
       const { data, status } = await post("/userTopics", form, token);
 
       if (status !== 201) {

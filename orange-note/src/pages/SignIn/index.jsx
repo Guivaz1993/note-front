@@ -22,13 +22,7 @@ function SignIn() {
 
   async function handleSubmit(e) {
     e.preventDefault();
-
-    const validateForm = await signIn.validate(form)
-      .catch((err) => err.errors);
-
-    if (validateForm !== form) {
-      return toast.error(validateForm[0]);
-    }
+    await signIn.validate(form);
 
     try {
       const { data, status } = await post("/signin", form);

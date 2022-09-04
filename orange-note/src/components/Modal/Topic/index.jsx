@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { post } from "../../../services/functions";
 import { getItem } from "../../../utils/Storage";
+import { newTopicSchema } from "../../../validations/infos";
 
 import "../styles.css";
 import "./style.css";
@@ -24,6 +25,8 @@ export default function ModalTopic({ openModal, setOpenModal }) {
   async function handleSubmit(e) {
     e.preventDefault();
     try {
+      await newTopicSchema.validate(form);
+
       const { data, status } = await post("/topics", form, token);
 
       if (status !== 201) {

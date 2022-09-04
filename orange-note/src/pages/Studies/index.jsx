@@ -18,7 +18,6 @@ function Studies() {
   const navigate = useNavigate();
 
   const handleClickOpen = () => {
-    console.log("novo plano de estudos");
     setOpenModal(true);
   };
 

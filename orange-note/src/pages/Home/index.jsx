@@ -15,8 +15,9 @@ import "./style.css";
 
 function Home() {
   const navigate = useNavigate();
-  const [infos, setInfos] = useState([]);
+  // const [infos, setInfos] = useState([]);
   const [pieChart, setPieChart] = useState([{ name: "textos", valor: 10 }]);
+  const [barChart, setBarChart] = useState([{ name: "Nome", Cadastrados: 10, Feitos: 5 }]);
   const [total, setTotal] = useState();
   const [done, setDone] = useState();
 
@@ -35,30 +36,32 @@ function Home() {
       return toast.error(data);
     }
 
+    const localBarChart = [];
+
     data.forEach((iten) => {
       countTotal += iten.contents;
       countDone += iten.done;
       textos += Number(iten.textos);
       videos += Number(iten.videos);
       cursos += Number(iten.cursos);
+      localBarChart.push({ name: iten.name, Cadastrados: iten.contents, Feitos: iten.done });
     });
     setTotal(countTotal);
     setDone(countDone);
     setPieChart([{
-      name: "textos",
+      name: "Textos",
       valor: textos,
     },
     {
-      name: "videos",
+      name: "Vídeos",
       valor: videos,
     },
     {
-      name: "cursos",
+      name: "Cursos",
       valor: cursos,
     },
     ]);
-
-    return setInfos(data);
+    return setBarChart(localBarChart);
   }
 
   useEffect(() => {
@@ -126,7 +129,7 @@ function Home() {
                 <BarChart
                   width={500}
                   height={300}
-                  data={infos}
+                  data={barChart}
                   margin={{
                     top: 5,
                     right: 30,
@@ -139,8 +142,8 @@ function Home() {
                   <YAxis />
                   <Tooltip />
                   <Legend />
-                  <Bar dataKey="contents" fill="var(--colour-graph1)" />
-                  <Bar dataKey="done" fill="var(--colour-graph2)" />
+                  <Bar dataKey="Cadastrados" fill="var(--colour-graph1)" />
+                  <Bar dataKey="Feitos" fill="var(--colour-graph2)" />
                 </BarChart>
               </ResponsiveContainer>
             </div>

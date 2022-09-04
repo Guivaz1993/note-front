@@ -60,7 +60,7 @@ const StyledTableRow = styled(TableRow)(() => ({
   },
 }));
 
-export default function CoursesTable({ id }) {
+export default function CoursesTable({ id, openCourseModal }) {
   const [order, setOrder] = useState("asc");
   const [orderBy, setOrderBy] = useState("study");
   const [rows, setRows] = useState([]);
@@ -106,7 +106,7 @@ export default function CoursesTable({ id }) {
 
   useEffect(() => {
     loadData();
-  }, []);
+  }, [openCourseModal]);
 
   return (
     <TableContainer sx={{ background: "var(--colour-black)" }}>

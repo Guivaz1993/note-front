@@ -1,17 +1,87 @@
-.StudyDetailPage {
+.CoursePage {
   min-height: 100vh;
 
   display: flex;
   flex-direction: column;
   align-items: flex-start;
 
-  padding: 6rem 5rem 0;
+  padding: 6rem 5rem 2rem;
   background-color: var(--colour-black);
+}
+
+.Flex {
+  width: 100%;
+  display: flex;
+}
+
+.CourseInfosContainer {
+  width: 80%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.CourseTextBase {
+  margin-bottom: 2rem;
+
+  font-size: 1.8rem;
+}
+
+.CourseTitle,
+.CourseText {
+  color: var(--colour-white);
+}
+
+.CourseTitle {
+  margin: 4rem 0 2rem;
+
+  font-size: 2.4rem;
+  font-weight: bold;
+}
+
+.CourseTitle::first-letter,
+.CourseText::first-letter {
+  text-transform: capitalize;
+}
+
+.CourseText {
+  text-align: start;
+}
+
+.CourseDone {
+  font-weight: bold;
+  color: var(--colour-light-grey);
+  text-transform: uppercase;
+}
+
+.CourseNotDone {
+  font-weight: bold;
+  color: var(--colour-orange);
+  text-transform: uppercase;
+}
+
+.CourseLink {
+  color: var(--colour-orange);
+  text-decoration: underline;
+}
+
+.CourseBtnSection {
+  margin-top: 10rem;
+}
+
+.CourseBtn {
+  border-radius: 0.8rem;
+  padding: 0.8rem 1.2rem;
+  margin: 0 1.2rem;
+  background-color: var(--colour-orange);
+  color: var(--colour-white);
+  font-size: 1.4rem;
+  font-weight: bold;
 }
 
 @media screen and (max-width: 600px) {
 
-  .StudyDetailPage {
+  .CoursePage {
     padding-top: 15rem;
   }
 }

@@ -35,8 +35,6 @@
 }
 
 .DetailBtn {
-  padding: 0.5rem;
-
   border-radius: 0.8rem;
   padding: 0.8rem 1.2rem;
   background-color: var(--colour-orange);

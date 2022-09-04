@@ -1,9 +1,11 @@
+/* eslint-disable eqeqeq */
 /* eslint-disable no-unused-vars */
 import Dialog from "@mui/material/Dialog";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { get, patch, post } from "../../../services/functions";
 import { getItem } from "../../../utils/Storage";
+import { newVideoSchema, updateVideoSchema } from "../../../validations/videos";
 
 import "../styles.css";
 import "./style.css";
@@ -47,6 +49,8 @@ export default function ModalVideo({
     e.preventDefault();
     try {
       if (currentVideo !== "new") {
+        await updateVideoSchema.validate(form);
+
         const response = await patch(
           `/videos/${currentVideo}`,
           {
@@ -58,9 +62,10 @@ export default function ModalVideo({
         if (response.status !== 200) {
           return toast.error(response.data.message);
         }
-
         toast.success("Atualização feita com sucesso.");
       } else {
+        await newVideoSchema.validate(form);
+
         const { data, status } = await post(
           "/videos",
           {

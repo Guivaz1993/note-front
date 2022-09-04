@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { get, patch, post } from "../../../services/functions";
 import { getItem } from "../../../utils/Storage";
+import { newArticleSchema, updateArticleSchema } from "../../../validations/article";
 
 import "../styles.css";
 import "./style.css";
@@ -47,6 +48,8 @@ export default function ModalArticle({
     e.preventDefault();
     try {
       if (currentArticle !== "new") {
+        await updateArticleSchema.validate(form);
+
         const response = await patch(
           `/article/${currentArticle}`,
           {
@@ -61,6 +64,8 @@ export default function ModalArticle({
 
         toast.success("Atualização feita com sucesso.");
       } else {
+        await newArticleSchema.validate(form);
+
         const { data, status } = await post(
           "/article",
           {

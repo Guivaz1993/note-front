@@ -9,10 +9,8 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import { toast } from "react-toastify";
-import { useNavigate } from "react-router-dom";
 import { get } from "../../../services/functions";
 import { getItem } from "../../../utils/Storage";
-import useUser from "../../../hooks/useUser";
 
 const StyledTableCell = styled(TableCell)(() => ({
   "&": {
@@ -61,14 +59,12 @@ const StyledTableRow = styled(TableRow)(() => ({
   },
 }));
 
-export default function VideosTable({ id }) {
+export default function VideosTable({ id, handleOpenVideo, openVideoModal }) {
   const [order, setOrder] = useState("asc");
   const [orderBy, setOrderBy] = useState("study");
   const [rows, setRows] = useState([]);
-  const { setCurrentStudy } = useUser();
 
   const token = getItem("token");
-  const navigate = useNavigate();
 
   function handleSort(colunm) {
     const localRows = rows;
@@ -99,16 +95,13 @@ export default function VideosTable({ id }) {
     }
   }
 
-  function detailStudy(idArticle, study, topic) {
-    setCurrentStudy({
-      id, study, topic,
-    });
-    navigate(`/studydetail/${idArticle}`);
+  function videoDetail(row) {
+    handleOpenVideo({ idVideo: row.id });
   }
 
   useEffect(() => {
     loadData();
-  }, []);
+  }, [openVideoModal]);
 
   return (
 
@@ -157,7 +150,7 @@ export default function VideosTable({ id }) {
             {rows.map((row) => (
               <StyledTableRow
                 key={row.id}
-                onClick={() => detailStudy(row.id, row.study, row.topic)}
+                onClick={() => videoDetail(row)}
                 hover
               >
                 <StyledTableCell>

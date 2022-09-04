@@ -4,19 +4,17 @@ import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { get, patch, post } from "../../../services/functions";
 import { getItem } from "../../../utils/Storage";
-import { newCourseSchema, updateCourseSchema } from "../../../validations/courses";
+import { newLessonSchema, updateLessonSchema } from "../../../validations/lessons";
 
 import "../styles.css";
 import "./style.css";
 
-export default function ModalCourse({
-  openModal, setOpenModal, topicId, userTopicsId, currentCourse,
+export default function ModalLesson({
+  openModal, setOpenModal, course, currentLesson,
 }) {
   const token = getItem("token");
   const [form, setForm] = useState({
-    course: "",
-    description: "",
-    link: "",
+    lesson: "",
     done: false,
   });
   const handleClose = () => {
@@ -29,14 +27,12 @@ export default function ModalCourse({
 
   async function loadInfos() {
     try {
-      const { data, status } = await get(`/course/${currentCourse}`, token);
+      const { data, status } = await get(`/lesson/${currentLesson}`, token);
       if (status !== 200) {
         return toast.error(data);
       }
       return setForm({
-        course: data.course,
-        description: data.description,
-        link: data.link,
+        lesson: data.lesson,
         done: data.done === true ? "true" : "false",
       });
     } catch (error) {
@@ -47,14 +43,14 @@ export default function ModalCourse({
   async function handleSubmit(e) {
     e.preventDefault();
     try {
-      if (currentCourse !== "new") {
-        await updateCourseSchema.validate(form);
+      if (currentLesson !== "new") {
+        await updateLessonSchema.validate(form);
 
         const response = await patch(
-          `/course/${currentCourse}`,
+          `/lessons/${currentLesson}`,
           {
             ...form,
-            usertopics_id: userTopicsId,
+            course_id: course,
           },
           token,
         );
@@ -64,14 +60,13 @@ export default function ModalCourse({
 
         toast.success("Atualização feita com sucesso.");
       } else {
-        await newCourseSchema.validate(form);
+        await newLessonSchema.validate(form);
 
         const { data, status } = await post(
-          "/course",
+          "/lessons",
           {
             ...form,
-            topic_id: topicId,
-            usertopics_id: userTopicsId,
+            course_id: course,
           },
           token,
         );
@@ -89,7 +84,7 @@ export default function ModalCourse({
   }
 
   useEffect(() => {
-    if (currentCourse !== "new") {
+    if (currentLesson !== "new") {
       loadInfos();
     }
   }, []);
@@ -103,49 +98,19 @@ export default function ModalCourse({
       >
         <form onSubmit={handleSubmit} className="ModalForm">
           <h2 className="ModalTitle">
-            {currentCourse === "new" ? "Adicione o seu novo curso" : "Atualize o seu curso"}
+            {currentLesson === "new" ? "Adicione a sua nova aula" : "Atualize a sua aula"}
           </h2>
           <div className="ModalFormContainer">
-            <label htmlFor="course" className="InputsLabel">
+            <label htmlFor="lesson" className="InputsLabel">
               <p className="ModalLabelText">
-                Nome do curso
+                Nome da aula
               </p>
               <input
                 type="text"
-                id="course"
-                value={form.course}
+                id="lesson"
+                value={form.lesson}
                 onChange={handleFormValue}
-                name="course"
-                className="ModalInput"
-              />
-            </label>
-          </div>
-          <div className="ModalFormContainer">
-            <label htmlFor="description" className="InputsLabel">
-              <p className="ModalLabelText">
-                Descrição
-              </p>
-              <textarea
-                type="text"
-                id="description"
-                value={form.description}
-                onChange={handleFormValue}
-                name="description"
-                className="ModalInput"
-              />
-            </label>
-          </div>
-          <div className="ModalFormContainer">
-            <label htmlFor="link" className="InputsLabel">
-              <p className="ModalLabelText">
-                Link
-              </p>
-              <input
-                type="text"
-                id="link"
-                value={form.link}
-                onChange={handleFormValue}
-                name="link"
+                name="lesson"
                 className="ModalInput"
               />
             </label>
@@ -193,7 +158,7 @@ export default function ModalCourse({
           </div>
           <div className="ModalBtnContainer">
             <button type="submit" className="ModalBtn ModalBtnConfirm">
-              {currentCourse === "new" ? "Adicionar" : "Atualizar"}
+              {currentLesson === "new" ? "Adicionar" : "Atualizar"}
             </button>
             <button
               type="button"
