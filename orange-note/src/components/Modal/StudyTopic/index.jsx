@@ -63,7 +63,7 @@ export default function ModalStudyTopic({ openModal, setOpenModal, setOpenModalT
     try {
       await newStudyTopicSchema.validate(form);
 
-      const { data, status } = await post("/userTopics", form, token);
+      const { data, status } = await post("/usertopics", form, token);
 
       if (status !== 201) {
         return toast.error(data.message);
