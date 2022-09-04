@@ -1,4 +1,4 @@
-const yup = require("../validations copy/config");
+const yup = require("./config");
 
 const newVideoSchema = yup.object().shape({
   video: yup.string().trim().required(),

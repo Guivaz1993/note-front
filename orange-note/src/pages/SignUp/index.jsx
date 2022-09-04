@@ -25,7 +25,7 @@ function SignUp() {
   async function handleSubmit(e) {
     e.preventDefault();
     try {
-      await signUp.validate(form).catch((err) => err.errors);
+      await signUp.validate(form);
 
       if (form.password !== form.confirmPassword) {
         return toast.error("Senhas não coincidem");

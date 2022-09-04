@@ -22,9 +22,9 @@ function SignIn() {
 
   async function handleSubmit(e) {
     e.preventDefault();
-    await signIn.validate(form);
 
     try {
+      await signIn.validate(form);
       const { data, status } = await post("/signin", form);
 
       if (status === 400) {
