@@ -16,7 +16,6 @@ const StyledTableCell = styled(TableCell)(() => ({
   "&": {
     fontFamily: "Metropolis,sans-serif",
     cursor: "pointer",
-    // textAlign: "center",
   },
   [`&.${tableCellClasses.head}`]: {
     border: "0.05rem solid var(--colour-light-grey)",
@@ -48,12 +47,10 @@ const StyledTableRow = styled(TableRow)(() => ({
   "&:nth-of-type(odd):hover , &:nth-of-type(even):hover": {
     textDecoration: "underline",
     backgroundColor: "var(--colour-orange)",
-    // border: "1px solid var(--colour-grey)",
   },
   "&:nth-of-type(even)": {
     backgroundColor: "#9f9b93",
   },
-  // hide last border
   "&:last-child td, &:last-child th": {
     border: 0,
   },

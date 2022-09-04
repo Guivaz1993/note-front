@@ -106,7 +106,7 @@ export default function ModalStudyTopic({ openModal, setOpenModal, setOpenModalT
                 name="study_id"
                 className="ModalInput"
               >
-                <option value={null}>Selecione o seu tópico</option>
+                <option value={null}>Selecione o seu plano de estudos</option>
                 {
                   studies.map((study) => (
                     <option key={study.id} value={study.id}>{study.study}</option>
