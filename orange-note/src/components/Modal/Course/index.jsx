@@ -8,12 +8,12 @@ import { getItem } from "../../../utils/Storage";
 import "../styles.css";
 import "./style.css";
 
-export default function ModalArticle({
-  openModal, setOpenModal, topicId, userTopicsId, currentArticle,
+export default function ModalCourse({
+  openModal, setOpenModal, topicId, userTopicsId, currentCourse,
 }) {
   const token = getItem("token");
   const [form, setForm] = useState({
-    article: "",
+    course: "",
     description: "",
     link: "",
     done: false,
@@ -28,12 +28,12 @@ export default function ModalArticle({
 
   async function loadInfos() {
     try {
-      const { data, status } = await get(`/article/detail/${currentArticle}`, token);
+      const { data, status } = await get(`/course/detail/${currentCourse}`, token);
       if (status !== 200) {
         return toast.error(data);
       }
       return setForm({
-        article: data.article,
+        course: data.course,
         description: data.description,
         link: data.link,
         done: data.done === true ? "true" : "false",
@@ -46,9 +46,9 @@ export default function ModalArticle({
   async function handleSubmit(e) {
     e.preventDefault();
     try {
-      if (currentArticle !== "new") {
+      if (currentCourse !== "new") {
         const response = await patch(
-          `/article/${currentArticle}`,
+          `/course/${currentCourse}`,
           {
             ...form,
             usertopics_id: userTopicsId,
@@ -62,7 +62,7 @@ export default function ModalArticle({
         toast.success("Atualização feita com sucesso.");
       } else {
         const { data, status } = await post(
-          "/article",
+          "/course",
           {
             ...form,
             topic_id: topicId,
@@ -84,8 +84,8 @@ export default function ModalArticle({
   }
 
   useEffect(() => {
-    if (currentArticle !== "new") {
-      loadInfos(loadInfos);
+    if (currentCourse !== "new") {
+      loadInfos();
     }
   }, []);
 
@@ -98,19 +98,19 @@ export default function ModalArticle({
       >
         <form onSubmit={handleSubmit} className="ModalForm">
           <h2 className="ModalTitle">
-            {currentArticle === "new" ? "Adicione o seu novo texto" : "Atualize o seu texto"}
+            {currentCourse === "new" ? "Adicione o seu novo curso" : "Atualize o seu curso"}
           </h2>
           <div className="ModalFormContainer">
-            <label htmlFor="article" className="InputsLabel">
+            <label htmlFor="course" className="InputsLabel">
               <p className="ModalLabelText">
-                Nome do texto
+                Nome do curso
               </p>
               <input
                 type="text"
-                id="article"
-                value={form.article}
+                id="course"
+                value={form.course}
                 onChange={handleFormValue}
-                name="article"
+                name="course"
                 className="ModalInput"
               />
             </label>
@@ -188,7 +188,7 @@ export default function ModalArticle({
           </div>
           <div className="ModalBtnContainer">
             <button type="submit" className="ModalBtn ModalBtnConfirm">
-              {currentArticle === "new" ? "Adicionar" : "Atualizar"}
+              {currentCourse === "new" ? "Adicionar" : "Atualizar"}
             </button>
             <button
               type="button"

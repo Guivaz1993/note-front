@@ -67,7 +67,13 @@ export default function Header() {
         >
           Detalhamento
         </NavLink>
-
+        <NavLink
+          to={`/course/${id}`}
+          style={({ isActive }) => (isActive ? active : undefined)}
+          className={({ isActive }) => (isActive ? "LinkHeader" : "LinkNone")}
+        >
+          Curso
+        </NavLink>
       </div>
       <div className="HeaderUser">
         <span className="HeaderName">{user.name}</span>

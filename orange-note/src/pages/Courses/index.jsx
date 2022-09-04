@@ -1,13 +1,11 @@
 import "./style.css";
 import { useEffect } from "react";
-// import { useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import Header from "../../components/Header";
-
-// import useUser from "../../hooks/useUser";
+import LessonsTable from "../../components/Tables/Lessons";
 
 function Courses() {
-  // const { currentStudy } = useUser();
-  // const { id } = useParams();
+  const { id } = useParams();
 
   useEffect(() => {
   }, []);
@@ -15,8 +13,14 @@ function Courses() {
     <div>
       <Header />
       <div className="StudyDetailPage">
-        <h1>Aulas</h1>
-
+        <h1>Curso</h1>
+        <p>Descrição Descrição</p>
+        <span>Finalizado?</span>
+        <a href="www.link.com">Link</a>
+        <button type="button">
+          Editar Curso
+        </button>
+        <LessonsTable id={id} />
       </div>
     </div>
   );

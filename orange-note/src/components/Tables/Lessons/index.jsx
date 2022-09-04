@@ -12,6 +12,7 @@ import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { get } from "../../../services/functions";
 import { getItem } from "../../../utils/Storage";
+import useUser from "../../../hooks/useUser";
 
 const StyledTableCell = styled(TableCell)(() => ({
   "&": {
@@ -60,10 +61,11 @@ const StyledTableRow = styled(TableRow)(() => ({
   },
 }));
 
-export default function CoursesTable({ id }) {
+export default function LessonsTable({ id }) {
   const [order, setOrder] = useState("asc");
   const [orderBy, setOrderBy] = useState("study");
   const [rows, setRows] = useState([]);
+  const { setCurrentStudy } = useUser();
 
   const token = getItem("token");
   const navigate = useNavigate();
@@ -84,7 +86,7 @@ export default function CoursesTable({ id }) {
 
   async function loadData() {
     try {
-      const { data, status } = await get(`/courses/${id}`, token);
+      const { data, status } = await get(`/lessons/${id}`, token);
 
       if (data.message === "Nenhum curso encontrado.") {
         return setRows([]);
@@ -100,8 +102,11 @@ export default function CoursesTable({ id }) {
     }
   }
 
-  function detailStudy(idCourse) {
-    navigate(`/course/${idCourse}`);
+  function detailStudy(idArticle, study, topic) {
+    setCurrentStudy({
+      id, study, topic,
+    });
+    navigate(`/studydetail/${idArticle}`);
   }
 
   useEffect(() => {
@@ -121,18 +126,11 @@ export default function CoursesTable({ id }) {
                 Finalizado
               </StyledTableCell>
               <StyledTableCell
-                sortDirection={orderBy === "course" ? order : false}
-                onClick={() => handleSort("course")}
+                sortDirection={orderBy === "lesson" ? order : false}
+                onClick={() => handleSort("lesson")}
                 align="center"
               >
                 Título
-              </StyledTableCell>
-              <StyledTableCell
-                sortDirection={orderBy === "description" ? order : false}
-                onClick={() => handleSort("description")}
-                align="center"
-              >
-                Descrição
               </StyledTableCell>
               <StyledTableCell
                 align="center"
@@ -147,20 +145,14 @@ export default function CoursesTable({ id }) {
             {rows.map((row) => (
               <StyledTableRow
                 key={row.id}
-                onClick={() => detailStudy(row.id)}
+                onClick={() => detailStudy(row.id, row.study, row.topic)}
                 hover
               >
                 <StyledTableCell>
                   {row.done ? "Finalizado" : "Em aberto"}
                 </StyledTableCell>
                 <StyledTableCell>
-                  {row.course}
-                </StyledTableCell>
-                <StyledTableCell
-                  align="center"
-                >
-                  {row.description}
-
+                  {row.lesson}
                 </StyledTableCell>
                 <StyledTableCell
                   align="center"
@@ -173,7 +165,7 @@ export default function CoursesTable({ id }) {
         </Table>
       )
         : (
-          <h1>Nenhum curso cadastrado</h1>
+          <h1>Nenhuma aula cadastrada</h1>
         )}
     </TableContainer>
   );

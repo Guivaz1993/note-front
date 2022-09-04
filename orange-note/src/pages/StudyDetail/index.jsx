@@ -6,15 +6,17 @@ import ArticlesTable from "../../components/Tables/Articles";
 import VideosTable from "../../components/Tables/Videos";
 import CoursesTable from "../../components/Tables/Courses";
 import ModalArticle from "../../components/Modal/Article";
+import ModalCourse from "../../components/Modal/Course";
+import ModalVideo from "../../components/Modal/Video";
 
 function StudyDetail() {
   const { id, topicId } = useParams();
   const [openArticleModal, setOpenArticleModal] = useState(false);
   const [currentArticle, setCurrentArticle] = useState("new");
   const [openVideoModal, setOpenVideoModal] = useState(false);
-  const [currentVideo, setCurrentVideo] = useState(null);
+  const [currentVideo, setCurrentVideo] = useState("new");
   const [openCourseModal, setOpenCourseModal] = useState(false);
-  const [currentCourse, setCurrentCourse] = useState(null);
+  const [currentCourse, setCurrentCourse] = useState("new");
 
   const handleOpenArticle = ({ idArticle }) => {
     if (idArticle) {
@@ -26,21 +28,21 @@ function StudyDetail() {
     setOpenArticleModal(true);
   };
 
-  const handleOpenVideo = (idVideo) => {
+  const handleOpenVideo = ({ idVideo }) => {
     if (idVideo) {
       setCurrentVideo(idVideo);
     } else {
-      setCurrentVideo(null);
+      setCurrentVideo("new");
     }
 
     setOpenVideoModal(true);
   };
 
-  const handleOpenCourse = (idCourse) => {
+  const handleOpenCourse = ({ idCourse }) => {
     if (idCourse) {
       setCurrentCourse(idCourse);
     } else {
-      setCurrentCourse(null);
+      setCurrentCourse("new");
     }
 
     setOpenCourseModal(true);
@@ -71,7 +73,11 @@ function StudyDetail() {
             Adicionar novo vídeo
           </button>
         </div>
-        <VideosTable id={id} />
+        <VideosTable
+          id={id}
+          handleOpenVideo={handleOpenVideo}
+          openVideoModal={openVideoModal}
+        />
         <h2 className="DetailText DetailTitle">Cursos</h2>
         <div className="DetailContainerText">
           <p className="DetailText DetailInfo">Aqui estão seu cursos cadastrados para esse tópico.</p>
@@ -79,7 +85,11 @@ function StudyDetail() {
             Adicionar novo curso
           </button>
         </div>
-        <CoursesTable id={id} />
+        <CoursesTable
+          id={id}
+          handleOpenCourse={handleOpenVideo}
+          openCourseModal={openCourseModal}
+        />
       </div>
       {openArticleModal && (
         <ModalArticle
@@ -91,7 +101,7 @@ function StudyDetail() {
         />
       )}
       {openVideoModal && (
-        <ModalArticle
+        <ModalVideo
           openModal={openVideoModal}
           setOpenModal={setOpenVideoModal}
           topicId={topicId}
@@ -100,7 +110,7 @@ function StudyDetail() {
         />
       )}
       {openCourseModal && (
-        <ModalArticle
+        <ModalCourse
           openModal={openCourseModal}
           setOpenModal={setOpenCourseModal}
           topicId={topicId}

@@ -8,12 +8,12 @@ import { getItem } from "../../../utils/Storage";
 import "../styles.css";
 import "./style.css";
 
-export default function ModalArticle({
-  openModal, setOpenModal, topicId, userTopicsId, currentArticle,
+export default function ModalVideo({
+  openModal, setOpenModal, topicId, userTopicsId, currentVideo,
 }) {
   const token = getItem("token");
   const [form, setForm] = useState({
-    article: "",
+    video: "",
     description: "",
     link: "",
     done: false,
@@ -28,12 +28,12 @@ export default function ModalArticle({
 
   async function loadInfos() {
     try {
-      const { data, status } = await get(`/article/detail/${currentArticle}`, token);
+      const { data, status } = await get(`/video/detail/${currentVideo}`, token);
       if (status !== 200) {
         return toast.error(data);
       }
       return setForm({
-        article: data.article,
+        video: data.video,
         description: data.description,
         link: data.link,
         done: data.done === true ? "true" : "false",
@@ -46,9 +46,9 @@ export default function ModalArticle({
   async function handleSubmit(e) {
     e.preventDefault();
     try {
-      if (currentArticle !== "new") {
+      if (currentVideo !== "new") {
         const response = await patch(
-          `/article/${currentArticle}`,
+          `/videos/${currentVideo}`,
           {
             ...form,
             usertopics_id: userTopicsId,
@@ -62,7 +62,7 @@ export default function ModalArticle({
         toast.success("Atualização feita com sucesso.");
       } else {
         const { data, status } = await post(
-          "/article",
+          "/videos",
           {
             ...form,
             topic_id: topicId,
@@ -84,7 +84,7 @@ export default function ModalArticle({
   }
 
   useEffect(() => {
-    if (currentArticle !== "new") {
+    if (currentVideo !== "new") {
       loadInfos(loadInfos);
     }
   }, []);
@@ -98,19 +98,21 @@ export default function ModalArticle({
       >
         <form onSubmit={handleSubmit} className="ModalForm">
           <h2 className="ModalTitle">
-            {currentArticle === "new" ? "Adicione o seu novo texto" : "Atualize o seu texto"}
+            {currentVideo === "new"
+              ? "Cadastre o seu novo vídeo"
+              : "Atualize o seu novo vídeo"}
           </h2>
           <div className="ModalFormContainer">
-            <label htmlFor="article" className="InputsLabel">
+            <label htmlFor="video" className="InputsLabel">
               <p className="ModalLabelText">
-                Nome do texto
+                Nome do vídeo
               </p>
               <input
                 type="text"
-                id="article"
-                value={form.article}
+                id="video"
+                value={form.video}
                 onChange={handleFormValue}
-                name="article"
+                name="video"
                 className="ModalInput"
               />
             </label>
@@ -148,7 +150,7 @@ export default function ModalArticle({
           <div className="ModalFormContainer">
             <section htmlFor="done" className="InputsLabel">
               <p className="ModalLabelText">
-                Já conclui?
+                Já concluiu?
               </p>
               <div className="ModalContainerRadioBtn">
                 <label
@@ -188,7 +190,7 @@ export default function ModalArticle({
           </div>
           <div className="ModalBtnContainer">
             <button type="submit" className="ModalBtn ModalBtnConfirm">
-              {currentArticle === "new" ? "Adicionar" : "Atualizar"}
+              {currentVideo === "new" ? "Adicionar" : "Atualizar"}
             </button>
             <button
               type="button"

@@ -4,6 +4,7 @@ import SignUp from "../pages/SignUp";
 import Home from "../pages/Home";
 import Studies from "../pages/Studies";
 import StudyDetail from "../pages/StudyDetail";
+import Courses from "../pages/Courses";
 
 function index() {
   return (
@@ -14,6 +15,7 @@ function index() {
       <Route path="/home" element={<Home />} />
       <Route path="/studies" element={<Studies />} />
       <Route path="/studydetail/:id/:topicId" element={<StudyDetail />} />
+      <Route path="/course/:id" element={<Courses />} />
     </Routes>
   );
 }
