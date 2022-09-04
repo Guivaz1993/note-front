@@ -17,7 +17,6 @@ const StyledTableCell = styled(TableCell)(() => ({
   "&": {
     fontFamily: "Metropolis,sans-serif",
     cursor: "pointer",
-    // textAlign: "center",
   },
   [`&.${tableCellClasses.head}`]: {
     border: "0.05rem solid var(--colour-light-grey)",
@@ -49,12 +48,10 @@ const StyledTableRow = styled(TableRow)(() => ({
   "&:nth-of-type(odd):hover , &:nth-of-type(even):hover": {
     textDecoration: "underline",
     backgroundColor: "var(--colour-orange)",
-    // border: "1px solid var(--colour-grey)",
   },
   "&:nth-of-type(even)": {
     backgroundColor: "#9f9b93",
   },
-  // hide last border
   "&:last-child td, &:last-child th": {
     border: 0,
   },
@@ -85,6 +82,9 @@ export default function StudiesTable({ openModal }) {
   async function loadData() {
     try {
       const { data, status } = await get("/usertopics", token);
+      if (data.message === "Nenhum tópico encontrado.") {
+        return setRows([]);
+      }
 
       if (status !== 200) {
         return toast.error(data.message);
@@ -106,69 +106,71 @@ export default function StudiesTable({ openModal }) {
 
   return (
     <TableContainer sx={{ background: "var(--colour-black)" }}>
-      <Table sx={{ minWidth: 700 }} aria-label="customized table">
-        <TableHead>
-          <TableRow>
-            <StyledTableCell
-              sortDirection={orderBy === "study" ? order : false}
-              onClick={() => handleSort("study")}
-            >
-              Plano de estudo
-            </StyledTableCell>
-            <StyledTableCell
-              sortDirection={orderBy === "topic" ? order : false}
-              onClick={() => handleSort("topic")}
-              align="center"
-            >
-              Tópicos
-            </StyledTableCell>
-            <StyledTableCell
-              align="center"
-              sortDirection={orderBy === "total" ? order : false}
-              onClick={() => handleSort("total")}
-            >
-              Conteúdos
-            </StyledTableCell>
-            <StyledTableCell
-              align="center"
-              sortDirection={orderBy === "done" ? order : false}
-              onClick={() => handleSort("done")}
-            >
-              Finalizados
-            </StyledTableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {rows.map((row) => (
-            <StyledTableRow
-              key={row.id}
-              onClick={() => detailStudy(row.id, row.topic_id)}
-              hover
-            >
-              <StyledTableCell>
-                {row.study}
+      {rows.length !== 0 ? (
+        <Table sx={{ minWidth: 700 }} aria-label="customized table">
+          <TableHead>
+            <TableRow>
+              <StyledTableCell
+                sortDirection={orderBy === "study" ? order : false}
+                onClick={() => handleSort("study")}
+              >
+                Plano de estudo
+              </StyledTableCell>
+              <StyledTableCell
+                sortDirection={orderBy === "topic" ? order : false}
+                onClick={() => handleSort("topic")}
+                align="center"
+              >
+                Tópicos
               </StyledTableCell>
               <StyledTableCell
                 align="center"
+                sortDirection={orderBy === "total" ? order : false}
+                onClick={() => handleSort("total")}
               >
-                {row.topic}
+                Conteúdos
+              </StyledTableCell>
+              <StyledTableCell
+                align="center"
+                sortDirection={orderBy === "done" ? order : false}
+                onClick={() => handleSort("done")}
+              >
+                Finalizados
+              </StyledTableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {rows.map((row) => (
+              <StyledTableRow
+                key={row.id}
+                onClick={() => detailStudy(row.id, row.topic_id)}
+                hover
+              >
+                <StyledTableCell>
+                  {row.study}
+                </StyledTableCell>
+                <StyledTableCell
+                  align="center"
+                >
+                  {row.topic}
 
-              </StyledTableCell>
-              <StyledTableCell
-                align="center"
-              >
-                {/* {Number(row.cursos) + Number(row.textos) + Number(row.videos)} */}
-                {row.contents}
-              </StyledTableCell>
-              <StyledTableCell
-                align="center"
-              >
-                {row.done}
-              </StyledTableCell>
-            </StyledTableRow>
-          ))}
-        </TableBody>
-      </Table>
+                </StyledTableCell>
+                <StyledTableCell
+                  align="center"
+                >
+                  {/* {Number(row.cursos) + Number(row.textos) + Number(row.videos)} */}
+                  {row.contents}
+                </StyledTableCell>
+                <StyledTableCell
+                  align="center"
+                >
+                  {row.done}
+                </StyledTableCell>
+              </StyledTableRow>
+            ))}
+          </TableBody>
+        </Table>
+      ) : (<h1>Nenhum curso cadastrado.</h1>)}
     </TableContainer>
   );
 }

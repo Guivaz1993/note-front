@@ -9,10 +9,8 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import { toast } from "react-toastify";
-// import { useNavigate } from "react-router-dom";
 import { get } from "../../../services/functions";
 import { getItem } from "../../../utils/Storage";
-// import useUser from "../../../hooks/useUser";
 
 const StyledTableCell = styled(TableCell)(() => ({
   "&": {
@@ -50,12 +48,10 @@ const StyledTableRow = styled(TableRow)(() => ({
   "&:nth-of-type(odd):hover , &:nth-of-type(even):hover": {
     textDecoration: "underline",
     backgroundColor: "var(--colour-orange)",
-    // border: "1px solid var(--colour-grey)",
   },
   "&:nth-of-type(even)": {
     backgroundColor: "#9f9b93",
   },
-  // hide last border
   "&:last-child td, &:last-child th": {
     border: 0,
   },
@@ -65,10 +61,8 @@ export default function ArticlesTable({ id, handleOpenArticle, openArticleModal 
   const [order, setOrder] = useState("asc");
   const [orderBy, setOrderBy] = useState("study");
   const [rows, setRows] = useState([]);
-  // const { setCurrentStudy } = useUser();
 
   const token = getItem("token");
-  // const navigate = useNavigate();
 
   function handleSort(colunm) {
     const localRows = rows;
