@@ -2,21 +2,21 @@
 import Dialog from "@mui/material/Dialog";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
-import { patch, post } from "../../../services/functions";
+import { get, patch, post } from "../../../services/functions";
 import { getItem } from "../../../utils/Storage";
 
+import "../styles.css";
 import "./style.css";
 
-export default function ModalTopic({
+export default function ModalArticle({
   openModal, setOpenModal, topicId, userTopicsId, currentArticle,
 }) {
   const token = getItem("token");
   const [form, setForm] = useState({
-    video: "",
+    article: "",
     description: "",
     link: "",
-    topic_id: "",
-    usertopics_id: "",
+    done: false,
   });
   const handleClose = () => {
     setOpenModal(false);
@@ -26,20 +26,50 @@ export default function ModalTopic({
     setForm({ ...form, [e.target.name]: e.target.value });
   }
 
+  async function loadInfos() {
+    try {
+      const { data, status } = await get(`/article/detail/${currentArticle}`, token);
+      if (status !== 200) {
+        return toast.error(data);
+      }
+      return setForm({
+        article: data.article,
+        description: data.description,
+        link: data.link,
+        done: data.done === true ? "true" : "false",
+      });
+    } catch (error) {
+      return toast.error(error.message);
+    }
+  }
+
   async function handleSubmit(e) {
     e.preventDefault();
     try {
-      console.log(form);
-      if (currentArticle) {
-        const { data, status } = await patch(`/videos/${currentArticle}`, form, token);
-
-        if (status !== 201) {
-          return toast.error(data.message);
+      if (currentArticle !== "new") {
+        const response = await patch(
+          `/article/${currentArticle}`,
+          {
+            ...form,
+            usertopics_id: userTopicsId,
+          },
+          token,
+        );
+        if (response.status !== 200) {
+          return toast.error(response.data.message);
         }
 
         toast.success("Atualização feita com sucesso.");
       } else {
-        const { data, status } = await post("/videos", form, token);
+        const { data, status } = await post(
+          "/article",
+          {
+            ...form,
+            topic_id: topicId,
+            usertopics_id: userTopicsId,
+          },
+          token,
+        );
 
         if (status !== 201) {
           return toast.error(data.message);
@@ -47,7 +77,6 @@ export default function ModalTopic({
 
         toast.success("Cadastro realizado com sucesso.");
       }
-
       return setTimeout(() => setOpenModal(false), 1000);
     } catch (error) {
       return toast.error(error.message);
@@ -55,7 +84,9 @@ export default function ModalTopic({
   }
 
   useEffect(() => {
-    console.log(topicId, userTopicsId);
+    if (currentArticle !== "new") {
+      loadInfos(loadInfos);
+    }
   }, []);
 
   return (
@@ -65,30 +96,103 @@ export default function ModalTopic({
         onClose={handleClose}
         scroll="paper"
       >
-        <form onSubmit={handleSubmit} className="ModalStudyForm">
-          <h2 className="ModalStudyTitle">
+        <form onSubmit={handleSubmit} className="ModalForm">
+          <h2 className="ModalTitle">
             Crie o seu novo tópico
           </h2>
-          <div className="ModalStudyContainer">
-            <label htmlFor="study" className="InputsLabel">
-              Tópico
+          <div className="ModalFormContainer">
+            <label htmlFor="article" className="InputsLabel">
+              <p className="ModalLabelText">
+                Nome do texto
+              </p>
               <input
                 type="text"
-                id="study"
-                value={form.topic}
+                id="article"
+                value={form.article}
                 onChange={handleFormValue}
-                name="topic"
-                className="Inputs"
+                name="article"
+                className="ModalInput"
               />
             </label>
           </div>
-          <div className="BtnSectionStudy">
-            <button type="submit" className="StudyBtn StudyCreateBtn">
+          <div className="ModalFormContainer">
+            <label htmlFor="description" className="InputsLabel">
+              <p className="ModalLabelText">
+                Descrição
+              </p>
+              <textarea
+                type="text"
+                id="description"
+                value={form.description}
+                onChange={handleFormValue}
+                name="description"
+                className="ModalInput"
+              />
+            </label>
+          </div>
+          <div className="ModalFormContainer">
+            <label htmlFor="link" className="InputsLabel">
+              <p className="ModalLabelText">
+                Link
+              </p>
+              <input
+                type="text"
+                id="link"
+                value={form.link}
+                onChange={handleFormValue}
+                name="link"
+                className="ModalInput"
+              />
+            </label>
+          </div>
+          <div className="ModalFormContainer">
+            <section htmlFor="done" className="InputsLabel">
+              <p className="ModalLabelText">
+                Já conclui?
+              </p>
+              <div className="ModalContainerRadioBtn">
+                <label
+                  htmlFor="Finalizado"
+                  className="ModalRadioBtnOptions"
+                  id="done"
+                >
+                  <input
+                    type="radio"
+                    id="done"
+                    value
+                    onChange={handleFormValue}
+                    name="done"
+                    checked={form.done === "true" && "defaultChecked"}
+                    className="ModalRadioBtnOptions"
+                  />
+                  Finalizado
+                </label>
+                <label
+                  htmlFor="Finalizado"
+                  className="ModalRadioBtnOptions"
+                  id="done"
+                >
+                  <input
+                    type="radio"
+                    id="done"
+                    value={false}
+                    onChange={handleFormValue}
+                    name="done"
+                    checked={form.done !== "true" && "defaultChecked"}
+                    className="ModalRadioBtnOptions"
+                  />
+                  Não finalizado
+                </label>
+              </div>
+            </section>
+          </div>
+          <div className="ModalBtnContainer">
+            <button type="submit" className="ModalBtn ModalBtnConfirm">
               Criar tópico
             </button>
             <button
               type="button"
-              className="StudyBtn StudyCancelBtn"
+              className="ModalBtn ModalBtnCancel"
               onClick={() => setOpenModal(false)}
             >
               Cancelar

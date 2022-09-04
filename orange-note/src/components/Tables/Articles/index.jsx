@@ -9,10 +9,10 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import { toast } from "react-toastify";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 import { get } from "../../../services/functions";
 import { getItem } from "../../../utils/Storage";
-import useUser from "../../../hooks/useUser";
+// import useUser from "../../../hooks/useUser";
 
 const StyledTableCell = styled(TableCell)(() => ({
   "&": {
@@ -61,14 +61,14 @@ const StyledTableRow = styled(TableRow)(() => ({
   },
 }));
 
-export default function ArticlesTable({ id }) {
+export default function ArticlesTable({ id, handleOpenArticle, openArticleModal }) {
   const [order, setOrder] = useState("asc");
   const [orderBy, setOrderBy] = useState("study");
   const [rows, setRows] = useState([]);
-  const { setCurrentStudy } = useUser();
+  // const { setCurrentStudy } = useUser();
 
   const token = getItem("token");
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   function handleSort(colunm) {
     const localRows = rows;
@@ -102,16 +102,13 @@ export default function ArticlesTable({ id }) {
     }
   }
 
-  function detailStudy(idArticle, study, topic) {
-    setCurrentStudy({
-      id, study, topic,
-    });
-    navigate(`/studydetail/${idArticle}`);
+  function detailStudy(idArticle) {
+    handleOpenArticle({ idArticle });
   }
 
   useEffect(() => {
     loadData();
-  }, []);
+  }, [openArticleModal]);
 
   return (
     <TableContainer sx={{ background: "var(--colour-black)" }}>
@@ -159,7 +156,7 @@ export default function ArticlesTable({ id }) {
             {rows.map((row) => (
               <StyledTableRow
                 key={row.id}
-                onClick={() => detailStudy(row.id, row.study, row.topic)}
+                onClick={() => detailStudy(row.id)}
                 hover
               >
                 <StyledTableCell>

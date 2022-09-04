@@ -5,6 +5,7 @@ import { toast } from "react-toastify";
 import { post } from "../../../services/functions";
 import { getItem } from "../../../utils/Storage";
 
+import "../styles.css";
 import "./style.css";
 
 export default function ModalStudy({ openModal, setOpenModal }) {
@@ -24,8 +25,6 @@ export default function ModalStudy({ openModal, setOpenModal }) {
   async function handleSubmit(e) {
     e.preventDefault();
     try {
-      console.log(form);
-
       const { data, status } = await post("/studies", form, token);
 
       if (status !== 201) {
@@ -50,30 +49,32 @@ export default function ModalStudy({ openModal, setOpenModal }) {
         onClose={handleClose}
         scroll="paper"
       >
-        <form onSubmit={handleSubmit} className="ModalStudyForm">
-          <h2 className="ModalStudyTitle">
+        <form onSubmit={handleSubmit} className=" ModalForm">
+          <h2 className="ModalTitle">
             Crie o seu novo plano de estudos
           </h2>
-          <div className="ModalStudyContainer">
-            <label htmlFor="study" className="InputsLabel">
-              Plano de Estudos
+          <div className="ModalFormContainer">
+            <label htmlFor="study" className="ModalLabel">
+              <p className="ModalLabelText">
+                Plano de Estudos
+              </p>
               <input
                 type="text"
                 id="study"
                 value={form.study}
                 onChange={handleFormValue}
                 name="study"
-                className="Inputs"
+                className="ModalInput"
               />
             </label>
           </div>
-          <div className="BtnSectionStudy">
-            <button type="submit" className="StudyBtn StudyCreateBtn">
+          <div className="ModalBtnContainer">
+            <button type="submit" className="ModalBtn ModalBtnConfirm">
               Criar plano de estudos
             </button>
             <button
               type="button"
-              className="StudyBtn StudyCancelBtn"
+              className="ModalBtn ModalBtnCancel"
               onClick={() => setOpenModal(false)}
             >
               Cancelar

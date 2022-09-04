@@ -36,7 +36,7 @@ async function patch(resource, data, token) {
       },
     });
 
-    return { data: response.data, ok: response.ok };
+    return { data: response.data, status: response.status };
   } catch (error) {
     return toast.error(error.message);
   }

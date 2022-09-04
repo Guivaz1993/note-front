@@ -4,6 +4,7 @@ import { toast } from "react-toastify";
 import { get, post } from "../../../services/functions";
 import { getItem } from "../../../utils/Storage";
 
+import "../styles.css";
 import "./style.css";
 
 export default function ModalStudyTopic({ openModal, setOpenModal, setOpenModalTopic }) {
@@ -59,8 +60,6 @@ export default function ModalStudyTopic({ openModal, setOpenModal, setOpenModalT
   async function handleSubmit(e) {
     e.preventDefault();
     try {
-      console.log(form);
-
       const { data, status } = await post("/userTopics", form, token);
 
       if (status !== 201) {
@@ -87,20 +86,22 @@ export default function ModalStudyTopic({ openModal, setOpenModal, setOpenModalT
         onClose={handleClose}
         scroll="paper"
       >
-        <form onSubmit={handleSubmit} className="ModalStudyForm">
-          <h2 className="ModalStudyTitle">
+        <form onSubmit={handleSubmit} className="ModalForm">
+          <h2 className="ModalTitle">
             Adicione um novo tópico para o seu plano de estudos
           </h2>
-          <div className="ModalStudyContainer">
-            <label htmlFor="study" className="InputsLabel">
-              Plano de Estudos
+          <div className="ModalFormContainer">
+            <label htmlFor="study" className="ModalLabel">
+              <p className="ModalLabelText">
+                Plano de Estudos
+              </p>
               <select
                 type="text"
                 id="study"
                 value={form.study}
                 onChange={handleFormValue}
                 name="study_id"
-                className="Inputs"
+                className="ModalInput"
               >
                 <option value={null}>Selecione o seu tópico</option>
                 {
@@ -111,16 +112,18 @@ export default function ModalStudyTopic({ openModal, setOpenModal, setOpenModalT
               </select>
             </label>
           </div>
-          <div className="ModalStudyContainer">
-            <label htmlFor="topic" className="InputsLabel">
-              Tópicos
+          <div className="ModalFormContainer">
+            <label htmlFor="topic" className="ModalLabel">
+              <p className="ModalLabelText">
+                Tópicos
+              </p>
               <select
                 type=""
                 id="topic"
                 value={form.topic}
                 onChange={handleFormValue}
                 name="topic_id"
-                className="Inputs"
+                className="ModalInput"
               >
                 <option value={null}>Selecione o seu tópico</option>
                 {
@@ -132,17 +135,17 @@ export default function ModalStudyTopic({ openModal, setOpenModal, setOpenModalT
             </label>
             <button
               type="button"
-              className="StudyNewInfo"
+              className="ModalBtn ModalBtnConfirm BtnNewTopic"
               onClick={handleNewTopic}
             >
               Precisa criar um novo tópico?
             </button>
           </div>
-          <div className="BtnSectionStudy">
-            <button type="submit" className="StudyBtn StudyCreateBtn">
+          <div className="ModalBtnContainer">
+            <button type="submit" className="ModalBtn ModalBtnConfirm">
               Adicionar Tópico
             </button>
-            <button type="button" className="StudyBtn StudyCancelBtn" onClick={() => setOpenModal(false)}>
+            <button type="button" className="ModalBtn ModalBtnCancel" onClick={() => setOpenModal(false)}>
               Cancelar
             </button>
           </div>
