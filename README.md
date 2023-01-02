@@ -8,7 +8,7 @@ Essa plataforma está hospedada no vercel o Link do deploy para acesso é https:
 Existe um usuário guivaz com senha 12345678 para teste caso deseje
 
 O repositório de back end está no seguinte link https://github.com/Guivaz1993/note-back
-A API está hospedada no Heroku com o link para acesso https://orange-note.onrender.com no mesmo site está hospedado o banco de dados para a utilização da api
+A API está hospedada no Render com o link para acesso https://orange-note.onrender.com no mesmo site está hospedado o banco de dados para a utilização da api
 
 ## :books: Funcionalidades
 
